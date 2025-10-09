@@ -36,7 +36,7 @@ public class Calculator {
         System.out.printf("The sum of %d and %d is %d.%n", num1, num2, sum);
         System.out.println();
         //will need to reprompt user for menu choice, but will come back to that later
-        //get two floating point values from the user and subtract together
+        //get two floating point values from the user and subtract value one from value two
         System.out.println("Enter two floating point values (2 decimal places):");
         double floatnum1 = input.nextDouble();
         double floatnum2 = input.nextDouble();
