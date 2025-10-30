@@ -5,18 +5,10 @@
  */
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 public class Calculator {
     public static void main(String[] args) throws Exception {
-        //print a header explaining the assignment
-        System.out.println("==================================================================================================");
-        System.out.println("This submission is for Week 3 of SDC230L to showcase Arrays; authored by Megan Gerth");
-        System.out.println("==================================================================================================");
-        //print a welcome message
-        System.out.println("Welcome to Megan's Calculator Program!\n");
-        getMenu();
-        
-        System.out.print("Please enter your math problem, 0 0 0 to exit, or 1 1 1 to see the rules again: ");
         //initialize variables
         double num1; 
         String operator;
@@ -24,107 +16,136 @@ public class Calculator {
         double memVal = 1; 
         double result = 0.0;
         ArrayList<Double> memArray = new ArrayList<Double>();
+        boolean greenLight = true;
         //create a scanner
         Scanner input = new Scanner(System.in);
-        //scan values into variables
-        num1 = input.nextDouble();
-        operator = input.next();
-        num2 = input.nextDouble();
-        //create a loop to allow multiple calculations until user decides to exit
-        while (!operator.equals("0")) {
-            if (operator.equals("1")) {
-                getMenu();
+
+        //print a header explaining the assignment
+        System.out.println("=======================================================================================================");
+        System.out.println("This submission is for Week 4 of SDC230L to showcase adding Exception Handling; authored by Megan Gerth");
+        System.out.println("=======================================================================================================");
+        //print a welcome message
+        System.out.println("Welcome to Megan's Calculator Program!\n");
+        getMenu();
+        do {
+            try {
                 System.out.print("Please enter your math problem, 0 0 0 to exit, or 1 1 1 to see the rules again: ");
+                //scan values into variables
                 num1 = input.nextDouble();
                 operator = input.next();
                 num2 = input.nextDouble();
-                continue;
-            }
-            else if (operator.equals("2")) {
-                System.out.printf("The current value in memory is: %.2f", memVal);
-                System.out.println("\nEnter 1 to enter a new value or 2 to delete the current value: ");
-                int option = input.nextInt();
-                if (option == 1) {
-                    System.out.println("\nWhat new value would you like to store in memory? ");
-                    memVal = input.nextDouble();
-                } else if (option == 2) {
-                    memVal = 0.0;
-                    System.out.println("Memory has been set to the default value of 0.0.");
+                if (operator.equals("0")) {
+                    System.out.println("Exiting program...");
+                    greenLight = false;
+                    input.close();
+                    return; 
                 }
-                System.out.printf("The current value in memory is: %.2f%n", memVal);
-                operator = "1";
-                continue;
-            }
-            else if (operator.equals("3")) {
-                memoryRecall(memArray);
-                memoryCalculations(memArray);
-                String choice;
-                if (memArray.size() < 10) {
-                    System.out.println("Would you like to add another value in memory? (Y/N)");
-                    choice = input.next();
-                    boolean cont = true;
-                    do {
-                        if (choice.equals("Y")|| choice.equals("y")) {
-                            System.out.println("Enter the value you would like to add?");
-                            double userVal = input.nextDouble();
-                            memoryStorage(memArray, userVal);
-                            System.out.println("Would you like to add another value in memory or enter N if full? (Y/N)");
-                            choice = input.next();
-                        } else {
-                            cont = false;
-                        }
-                    } while (cont);
-                }
-                System.out.println("Would you like to remove a value in memory? (Y/N)");
-                choice = input.next();
-                boolean cont = true;
-                do {
-                    if (choice.equals("Y")|| choice.equals("y")) {
-			            System.out.println("What value would you like to remove?");
-			            memVal = input.nextDouble();
-			            memoryRemove(memArray, memVal);
-                        System.out.println("Would you like to remove another value in memory? (Y/N)");
-                        choice = input.next();
-			        } else {
-                        cont = false;
+                //create a loop to allow multiple calculations until user decides to exit
+                while (!operator.equals("0")) {
+                    if (operator.equals("1")) {
+                        getMenu();
+                        System.out.print("Please enter your math problem, 0 0 0 to exit, or 1 1 1 to see the rules again: ");
+                        num1 = input.nextDouble();
+                        operator = input.next();
+                        num2 = input.nextDouble();
+                        continue;
                     }
-                } while (cont);
-                operator = "1";
-                continue;
-            }
-            else if (operator.equals("+")) {
-                result = Operations.add(num1, num2);
-                System.out.printf("The sum of %.2f + %.2f is %.2f.%n", num1, num2, result);
-            } else if (operator.equals("-")) {
-                result = Operations.sub(num1, num2);
-                System.out.printf("The difference of %.2f - %.2f is %.2f.%n", num1, num2, result);
-            } else if (operator.equals("*")) {
-                result = Operations.mul(num1, num2);
-                System.out.printf("The product of %.2f * %.2f is %.2f.%n", num1, num2, result);
-            } else if (operator.equals("/")) {
-                try {
-                    result = Operations.div(num1, num2);
-                    System.out.printf("The quotient of %.2f / %.2f is %.2f.%n", num1, num2, result);
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
-            } else {
-                System.out.println("Invalid operator. Please use +, -, *, or /.");
-            }
-            //prompt user if they would like to store value in multi value memory array
-            String choice;
-            System.out.println("Would you like to store your value in memory? (Y/N)");
-            choice = input.next();
-            if (choice.equals("Y")|| choice.equals("y")) {
-                memoryStorage(memArray, result);
-            }
+                    else if (operator.equals("2")) {
+                        System.out.printf("The current value in memory is: %.2f", memVal);
+                        System.out.println("\nEnter 1 to enter a new value or 2 to delete the current value: ");
+                        int option = input.nextInt();
+                        if (option == 1) {
+                            System.out.println("\nWhat new value would you like to store in memory? ");
+                            memVal = input.nextDouble();
+                        } else if (option == 2) {
+                            memVal = 0.0;
+                            System.out.println("Memory has been set to the default value of 0.0.");
+                        }
+                        System.out.printf("The current value in memory is: %.2f%n", memVal);
+                        operator = "1";
+                        continue;
+                    }
+                    else if (operator.equals("3")) {
+                        memoryRecall(memArray);
+                        memoryCalculations(memArray);
+                        String choice;
+                        if (memArray.size() < 10) {
+                            System.out.println("Would you like to add another value in memory? (Y/N)");
+                            choice = input.next();
+                            boolean cont = true;
+                            do {
+                                if (choice.equals("Y")|| choice.equals("y")) {
+                                    System.out.println("Enter the value you would like to add?");
+                                    double userVal = input.nextDouble();
+                                    memoryStorage(memArray, userVal);
+                                    System.out.println("Would you like to add another value in memory or enter N if full? (Y/N)");
+                                    choice = input.next();
+                                } else {
+                                    cont = false;
+                                }
+                            } while (cont);
+                        }
+                        System.out.println("Would you like to remove a value in memory? (Y/N)");
+                        choice = input.next();
+                        boolean cont = true;
+                        do {
+                            if (choice.equals("Y")|| choice.equals("y")) {
+                                System.out.println("What value would you like to remove?");
+                                memVal = input.nextDouble();
+                                memoryRemove(memArray, memVal);
+                                System.out.println("Would you like to remove another value in memory? (Y/N)");
+                                choice = input.next();
+                            } else {
+                                cont = false;
+                            }
+                        } while (cont);
+                        operator = "1";
+                        continue;
+                    }
+                    else if (operator.equals("+")) {
+                        result = Operations.add(num1, num2);
+                        System.out.printf("The sum of %.2f + %.2f is %.2f.%n", num1, num2, result);
+                    } else if (operator.equals("-")) {
+                        result = Operations.sub(num1, num2);
+                        System.out.printf("The difference of %.2f - %.2f is %.2f.%n", num1, num2, result);
+                    } else if (operator.equals("*")) {
+                        result = Operations.mul(num1, num2);
+                        System.out.printf("The product of %.2f * %.2f is %.2f.%n", num1, num2, result);
+                    } else if (operator.equals("/")) {
+                        try {
+                            result = Operations.div(num1, num2);
+                            System.out.printf("The quotient of %.2f / %.2f is %.2f.%n", num1, num2, result);
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                            operator = "1";
+                            continue;
+                        }
+                    } else {
+                        System.out.println("Invalid operator. Please use +, -, *, or /.");
+                        throw new IllegalArgumentException();
+                    }
+                    //prompt user if they would like to store value in multi value memory array
+                    String choice;
+                    System.out.println("Would you like to store your value in memory? (Y/N)");
+                    choice = input.next();
+                    if (choice.equals("Y")|| choice.equals("y")) {
+                        memoryStorage(memArray, result);
+                    }
 
-            //prompt user for another calculation
-            System.out.print("Please enter your math problem, 0 0 0 to exit, or 1 1 1 to see the rules again: ");
-             num1 = input.nextDouble();
-             operator = input.next(); 
-             num2 = input.nextDouble();
-        } 
+                    //prompt user for another calculation
+                    System.out.print("Please enter your math problem, 0 0 0 to exit, or 1 1 1 to see the rules again: ");
+                    num1 = input.nextDouble();
+                    operator = input.next(); 
+                    num2 = input.nextDouble();
+                } 
+            } catch (InputMismatchException e) {
+                System.err.printf("Error: %s. Invalid input. Please enter your expression as number operator number, seperated by spaces (e.g. 5 + 3).%n%n", e.getMessage());
+                input.nextLine(); //clear the invalid input
+            } catch (IllegalArgumentException e) {
+                System.err.printf("Error: %s. Calculation could not be completed due to invalid operator.%n%n", e.getMessage());
+                input.nextLine(); //clear the invalid input
+            } 
+        } while (greenLight);
         //Thank user for trying system
         System.out.println("Thank you for trying Megan's Calculator Program!");
 
