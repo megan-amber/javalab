@@ -33,6 +33,6 @@ store values in memory, and display certain information about the values stored 
 ## Language Used
 - **Java**: Utilized to showcase Object Oriented Programming basics.
 ## Link to Project
-[Example Project Repository](https://github.com/username/example-project)
+[Example Project Repository](https://github.com/megan-amber/javalab.git)
 
 
