@@ -17,12 +17,13 @@ public class Calculator {
         double result = 0.0;
         ArrayList<Double> memArray = new ArrayList<Double>();
         boolean greenLight = true;
+
         //create a scanner
         Scanner input = new Scanner(System.in);
 
         //print a header explaining the assignment
         System.out.println("=======================================================================================================");
-        System.out.println("This submission is for Week 4 of SDC230L to showcase adding Exception Handling; authored by Megan Gerth");
+        System.out.println("This is my final project submission for SDC230L to showcase OOP in Java; authored by Megan Gerth");
         System.out.println("=======================================================================================================");
         //print a welcome message
         System.out.println("Welcome to Megan's Calculator Program!\n");
@@ -37,8 +38,7 @@ public class Calculator {
                 if (operator.equals("0")) {
                     System.out.println("Exiting program...");
                     greenLight = false;
-                    input.close();
-                    return; 
+                    break; 
                 }
                 //create a loop to allow multiple calculations until user decides to exit
                 while (!operator.equals("0")) {
@@ -60,14 +60,16 @@ public class Calculator {
                         } else if (option == 2) {
                             memVal = 0.0;
                             System.out.println("Memory has been set to the default value of 0.0.");
+                        } else {
+                            System.out.println("Invalid option. Memory value remains unchanged.");
                         }
                         System.out.printf("The current value in memory is: %.2f%n", memVal);
                         operator = "1";
                         continue;
                     }
                     else if (operator.equals("3")) {
-                        memoryRecall(memArray);
-                        memoryCalculations(memArray);
+                        memoryFunctions.memoryRecall(memArray);
+                        memoryFunctions.memoryCalculations(memArray);
                         String choice;
                         if (memArray.size() < 10) {
                             System.out.println("Would you like to add another value in memory? (Y/N)");
@@ -77,11 +79,14 @@ public class Calculator {
                                 if (choice.equals("Y")|| choice.equals("y")) {
                                     System.out.println("Enter the value you would like to add?");
                                     double userVal = input.nextDouble();
-                                    memoryStorage(memArray, userVal);
+                                    memoryFunctions.memoryStorage(memArray, userVal);
                                     System.out.println("Would you like to add another value in memory or enter N if full? (Y/N)");
                                     choice = input.next();
-                                } else {
+                                } else if (choice.equals("N")|| choice.equals("n")) {
                                     cont = false;
+                                } else {
+                                    System.out.println("Invalid input. Please enter Y or N.");
+                                    choice = input.next();
                                 }
                             } while (cont);
                         }
@@ -91,12 +96,15 @@ public class Calculator {
                         do {
                             if (choice.equals("Y")|| choice.equals("y")) {
                                 System.out.println("What value would you like to remove?");
-                                memVal = input.nextDouble();
-                                memoryRemove(memArray, memVal);
+                                double userVal = input.nextDouble();
+                                memoryFunctions.memoryRemove(memArray, userVal);
                                 System.out.println("Would you like to remove another value in memory? (Y/N)");
                                 choice = input.next();
-                            } else {
+                            } else if (choice.equals("N")|| choice.equals("n")) {
                                 cont = false;
+                            } else {
+                                System.out.println("Invalid input. Please enter Y or N.");
+                                choice = input.next();
                             }
                         } while (cont);
                         operator = "1";
@@ -129,7 +137,11 @@ public class Calculator {
                     System.out.println("Would you like to store your value in memory? (Y/N)");
                     choice = input.next();
                     if (choice.equals("Y")|| choice.equals("y")) {
-                        memoryStorage(memArray, result);
+                        memoryFunctions.memoryStorage(memArray, result);
+                    } else if (choice.equals("N")|| choice.equals("n")) {
+                        System.out.println("Value not stored in memory.");
+                    } else {
+                        System.out.println("Invalid input. Value not stored in memory.");
                     }
 
                     //prompt user for another calculation
@@ -146,6 +158,8 @@ public class Calculator {
                 input.nextLine(); //clear the invalid input
             } 
         } while (greenLight);
+        //close the scanner
+        input.close();
         //Thank user for trying system
         System.out.println("Thank you for trying Megan's Calculator Program!");
 
@@ -159,53 +173,6 @@ public class Calculator {
         System.out.println("5. Enter 2 2 2 for the Single Value Memory.");
         System.out.println("6. Enter 3 3 3 to view the Multi-value Memory.");  
     }
-    public static void memoryStorage(ArrayList<Double> memArr, double num) {
-        if (memArr.size() > 9) {
-            System.out.println("Sorry, memory full!");
-        }    
-        else {
-            memArr.add(num);
-            System.out.printf("%.2f has been stored in memory at location %d%n", memArr.get(memArr.size() - 1), memArr.size() - 1);
-        }
-    }
-    public static void memoryRecall(ArrayList<Double> memArr) {
-        System.out.printf("%nThis is your current memory array's values, organized by their order: %n");
-        System.out.printf("%s%8s%n", "Index", "Value");
-        System.out.println("-------------------");
-        //Print the initial values in the array - should be all zeros
-        for (int i = 0; i < memArr.size(); i++) {
-            System.out.printf("%5d%8.2f%n", i, memArr.get(i));
-        }
-        System.out.println("-------------------");
-        System.out.printf("The number of values in your array is %d.%n", memArr.size());
-    }
-    public static void memoryRemove(ArrayList<Double> memArr, double r) {
-        boolean removed = memArr.remove(r);
-        if (removed) System.out.printf("Removed %.2f%n", r);
-        else System.out.printf("Could not find %.2f%n", r);
-    }
-    public static void memoryCalculations(ArrayList<Double> memArr) {
-        double total = 0.0;
-        double average = 0.0;
-        double difference = 0.0;
-        //Use for loop to add the array numbers to a running total
-        for (double num : memArr) {
-            total += num;
-        }
-        //Print the sum of the ArrayList
-        System.out.printf("1. The sum of the values in your current array is %.2f.%n", total);
-        //Calculate the average
-        average = total / memArr.size();
-        //Print the average
-        System.out.printf("2. The average of the values in your current array is %.2f.%n", average);
-        //if list is greater than 1, find the difference between the first and last value
-        if (memArr.size() > 1) {
-            double first = memArr.get(0);
-            double last = memArr.get(memArr.size() - 1);
-            difference = first - last;
-            System.out.printf("3. The difference between the first and last value in your current array is %.2f.%n", difference);
-        }
-    }
-
+    
 }
     

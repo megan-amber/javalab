@@ -1,4 +1,9 @@
-
+/*******************************************************
+ * Megan Gerth megger5968 SDC230L
+ * Date: 10/16/2025
+ * Assignment: Project Java Lab 
+ * Operations Class - used to encapsulate basic arithmetic operations
+ */
 public class Operations {
     
     //method to add two integers
